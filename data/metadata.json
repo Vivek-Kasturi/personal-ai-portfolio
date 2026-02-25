@@ -1,0 +1,62 @@
+[
+  {
+    "source": "doc4.md",
+    "text": "# Sentence-Transformers and all-MiniLM-L6-v2\n\nSentence-Transformers is a library that provides pretrained models for sentence and document embeddings. The model `all-MiniLM-L6-v2` is a popular choice for RAG systems.\n\nProperties:\n- Dimension: 384\n- Lightweight and fast on CPU\n- Good performance on semantic similarity tasks\n\nIt is a strong default for building semantic search and retrieval pipelines without requiring GPUs."
+  },
+  {
+    "source": "doc5.md",
+    "text": "# Hybrid Retrieval: Combining BM25 and Vector Search\n\nHybrid retrieval combines keyword-based search (e.g., BM25) with dense vector search. This approach leverages the strengths of both methods.\n\nBM25:\n- Great for exact matches, rare terms, and acronyms.\n- Works well when users know specific keywords.\n\nVector search:\n- Captures semantic similarity.\n- Handles paraphrasing and natural language queries."
+  },
+  {
+    "source": "doc5.md",
+    "text": "A simple hybrid strategy is to retrieve candidates from both BM25 and FAISS, then merge and rerank them."
+  },
+  {
+    "source": "doc1.md",
+    "text": "# Introduction to Retrieval-Augmented Generation (RAG)\n\nRetrieval-Augmented Generation (RAG) is a pattern where a language model is combined with an external knowledge source, such as a vector database or document store. Instead of relying purely on parametric memory, the model retrieves relevant context at query time and conditions its generation on that context."
+  },
+  {
+    "source": "doc1.md",
+    "text": "The core idea is simple:\n1. Encode the user query into an embedding.\n2. Retrieve the most similar chunks from a document store.\n3. Build a prompt that includes both the query and the retrieved context.\n4. Ask the LLM to answer using only that context.\n\nRAG improves factual accuracy, reduces hallucinations, and allows models to stay up to date without retraining."
+  },
+  {
+    "source": "doc6.md",
+    "text": "# Cross-Encoder Reranking\n\nReranking is the process of taking an initial set of retrieved documents and reordering them using a more powerful model. Cross-encoders are often used for this because they jointly encode the query and document.\n\nAdvantages:\n- Higher relevance accuracy than pure vector similarity.\n- Better handling of subtle semantic differences.\n\nDisadvantages:\n- Slower and more expensive than bi-encoders.\n- Typically used only on the top-k candidates (e.g., top 50)."
+  },
+  {
+    "source": "doc6.md",
+    "text": "In a RAG system, reranking can significantly improve the quality of the final context passed to the LLM."
+  },
+  {
+    "source": "doc2.md",
+    "text": "# Chunking Strategies for RAG Systems\n\nChunking is the process of splitting long documents into smaller pieces that can be embedded and retrieved efficiently. Good chunking is critical for RAG performance.\n\nCommon strategies:\n- Fixed-size chunks (e.g., 500 tokens with 50 token overlap)\n- Semantic chunking based on headings or paragraphs\n- Hybrid approaches that combine structure and size constraints"
+  },
+  {
+    "source": "doc2.md",
+    "text": "Tradeoffs:\n- Too small: context becomes fragmented and loses meaning.\n- Too large: retrieval becomes noisy and less precise.\n\nA practical starting point is 400\u2013600 tokens per chunk with 10\u201320% overlap."
+  },
+  {
+    "source": "doc3.md",
+    "text": "# Vector Search with FAISS\n\nFAISS is a library developed by Meta for efficient similarity search and clustering of dense vectors. It is widely used in RAG systems to perform nearest neighbor search over document embeddings.\n\nKey concepts:\n- IndexFlatL2: exact search using L2 distance.\n- IVF indexes: approximate search for large-scale datasets.\n- GPU support: accelerates search for millions of vectors.\n\nFor small to medium projects, IndexFlatL2 is often sufficient and easy to use."
+  },
+  {
+    "source": "doc7.md",
+    "text": "# Latency Considerations in RAG Systems\n\nLatency in a RAG system comes from several components:\n- Embedding computation for the query\n- Vector or hybrid retrieval\n- Reranking\n- LLM generation\n\nTo optimize latency:\n- Cache embeddings for frequent queries.\n- Use efficient indexes like FAISS.\n- Limit reranking to a small candidate set.\n- Use streaming responses from the LLM.\n\nMeasuring retrieval latency, LLM latency, and total latency separately helps identify bottlenecks."
+  },
+  {
+    "source": "doc10.md",
+    "text": "# System Design Principles for ML-Powered Applications\n\nWhen designing ML systems like RAG, some key principles are:"
+  },
+  {
+    "source": "doc10.md",
+    "text": "- Design before coding: define components, data flow, and interfaces.\n- Separate concerns: retrieval, reranking, orchestration, and serving should be modular.\n- Measure everything: model metrics, system metrics, and business metrics.\n- Start simple: build a minimal, reliable baseline before adding complexity.\n- Optimize for observability: logs, traces, and metrics should make debugging easy.\n\nThese principles help ensure that ML systems are maintainable, debuggable, and production-ready."
+  },
+  {
+    "source": "doc8.md",
+    "text": "# Evaluating RAG Systems\n\nEvaluating a RAG system requires more than just model metrics. You need to measure:\n\n- Retrieval quality: precision@k, recall@k, MRR\n- Answer quality: faithfulness, relevance, completeness\n- System metrics: latency, throughput, cost per query\n\nTools like RAGAS can automate parts of this evaluation by scoring how well the answer aligns with the retrieved context and the ground truth."
+  },
+  {
+    "source": "doc9.md",
+    "text": "# Minimal RAG Pipeline Design\n\nA minimal RAG pipeline has the following steps:\n\n1. Load and chunk documents.\n2. Embed chunks and store them in a vector index.\n3. At query time, embed the query.\n4. Retrieve the top-k most similar chunks.\n5. Build a prompt that includes the query and retrieved context.\n6. Call the LLM and return the answer.\n\nThis baseline is essential before adding agents, tools, or complex orchestration."
+  }
+]

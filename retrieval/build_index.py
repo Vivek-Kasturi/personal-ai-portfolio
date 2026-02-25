@@ -2,7 +2,7 @@ import os
 import json
 import faiss
 from sentence_transformers import SentenceTransformer
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 DATA_DIR = "data/raw"
 INDEX_PATH = "data/faiss.index"
